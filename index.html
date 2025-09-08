@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreekGOD Gym</title>
+  <style>
+    /* Reset */
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif;}
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: #2c2c2c;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1, h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .title-text {
+background: linear-gradient(135deg, #c68642, #e3b778, #d4a373, #f5deb3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+    p {
+      font-size: 1.2rem;
+      max-width: 750px;
+      line-height: 1.6;
+    }
+
+    /* Membership Cards */
+    .plans {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .plan {
+      background: #111;
+      border-radius: 20px;
+      padding: 2rem;
+      width: 250px;
+      transition: transform 0.3s;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+    }
+    .plan:hover {
+      transform: scale(1.05) rotate(-1deg);
+      box-shadow: 0 0 30px rgba(0,255,255,0.6);
+    }
+    .plan h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #0ff; }
+    .plan button {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      background: linear-gradient(45deg, #0ff, #f0f, #ff0);
+      color: #fdfdfd;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .plan button:hover { transform: scale(1.1); }
+
+    /* Trainers */
+    .trainers {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .trainer {
+      background: #111;
+      padding: 1.5rem;
+      border-radius: 15px;
+      width: 220px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+      transition: 0.3s;
+    }
+    .trainer:hover { transform: scale(1.05) rotate(-1deg);
+      box-shadow: 0 0 30px rgba(0,255,255,0.6); }
+    .trainer img {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+    }
+
+    /* Testimonials */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .testimonial {
+      background: #111;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+      font-size: 1rem;
+      line-height: 1.5;
+      text-align: left;
+      position: relative;
+    }
+    .testimonial img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      border: 2px solid #0ff;
+    }
+    .testimonial strong {
+      display: block;
+      margin-top: 1rem;
+      color: #0ff;
+    }
+
+    /* Contact */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 400px;
+      margin-top: 2rem;
+      width: 100%;
+    }
+    form input, form textarea {
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+    }
+    form button {
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      color:white;
+      background: linear-gradient(45deg, #0ff, #f0f, #ff0);
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    form button:hover { transform: scale(1.1); }
+
+    /* Sticky Header */
+    header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #2c2c2c;
+      z-index: 1000;
+      backdrop-filter: blur(8px);
+    }
+    header h2 {
+      font-size: 1.7rem;
+      background: linear-gradient(135deg, #c68642, #e3b778, #d4a373, #f5deb3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      cursor: pointer;
+    }
+    header nav a {
+      margin-left: 1.5rem;
+      color:  rgb(255, 255, 255);
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.3s, color 0.3s;
+      display: inline-block;
+    }
+    header nav a:hover { 
+      color: #0ff; 
+      transform: scale(1.15);
+    }
+    header nav a.active {
+      color: #ff0;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #ff0;
+    }
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.card {
+  background: #111;
+  border-radius: 15px;
+  width: 280px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,255,255,0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(0,255,255,0.6);
+}
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+.card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #0ff;
+}
+.card p {
+  font-size: 1rem;
+  color: #ddd;
+}
+#exploreBtn {
+  margin-top: 2rem;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  background: linear-gradient(45deg, #0ff, #f0f, #ff0);
+  color: #ffffff;
+  font-size: 1.1rem;
+  transition: transform 0.3s;
+}
+#exploreBtn:hover {
+  transform: scale(1.1);
+}
+#exploreBtn span {
+  display: inline-block;
+  margin-left: 0.5rem;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(5px); }
+  60% { transform: translateY(3px); }
+}
+
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(45deg, #0ff, #f0f, #ff0);
+      color: #ffffff;
+      font-weight: bold;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      box-shadow: 0 0 15px rgba(0,255,255,0.6);
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 1100;
+    }
+    #backToTop:hover { transform: scale(1.2); opacity: 0.9; }
+    
+  </style>
+</head>
+<body>
+  <header>
+    <h2 onclick="window.scrollTo({top: 0, behavior: 'smooth'});">GreekGOD</h2>
+    <nav>
+      <a href="#facilities">Facilities</a>
+      <a href="#services">Services</a>
+      <a href="#trainers">Trainers</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#plans">Membership</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="hero" class="visible">
+    <h1 class="title-text"> Unleash Your Inner Beast </h1>
+    <p>Welcome to <strong>GreekGod</strong>, where fitness meets innovation. Scroll down to explore our advanced facilities, electrifying trainers, and community vibes.</p>
+    <button id="exploreBtn">Explore <span style="font-size:1.2rem; display:inline-block; transform:translateY(2px);">↓</span></button>
+  </section>
+
+  <section id="facilities">
+  <h2>⚡<span class="title-text">World-Class Facilities</span></h2>
+  <div class="cards">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b" alt="Gym Equipment">
+      <h3>Advanced Equipment</h3>
+      <p>Train with state-of-the-art machines designed for strength and cardio.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1554284126-aa88f22d8b74" alt="Cardio Zone">
+      <h3>Neon Cardio Zone</h3>
+      <p>Push your limits in a vibrant, neon-lit cardio environment.</p>
+    </div>
+    <div class="card">
+<img src="sauna.jpeg" alt="Recovery & Sauna">
+      <h3>Recovery & Sauna</h3>
+      <p>Relax and rejuvenate with our modern sauna and recovery pods.</p>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <h2>🔥<span class="title-text">Services We Offer</span></h2>
+  <div class="cards">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1" alt="Personal Training">
+      <h3>Personal Training</h3>
+      <p>One-on-one expert guidance to achieve your fitness goals.</p>
+    </div>
+    <div class="card">
+<img src="yoga.jpg" alt="Yoga & Meditation">
+      <h3>Yoga & Meditation</h3>
+      <p>Find your inner peace with expert-led yoga and meditation sessions.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1558611848-73f7eb4001a1" alt="CrossFit Training">
+      <h3>CrossFit Sessions</h3>
+      <p>High-intensity CrossFit workouts to build strength and stamina.</p>
+    </div>
+  </div>
+</section>
+
+  <section id="trainers">
+    <h2>💪<span class="title-text">Meet Our Trainers</span></h2>
+    <div class="trainers">
+      <div class="trainer">
+        <img src="cbum.jpeg" alt="cbum">
+        <h3>Chris Bumstead</h3>
+        <p>Strength Coach</p>
+      </div>
+      <div class="trainer">
+        <img src="lindner.jpeg" alt="joe lindner">
+        <h3>Joe Lindner</h3>
+        <p>Body Building Expert</p>
+      </div>
+      <div class="trainer">
+        <img src="david.jpeg" alt="david laid">
+        <h3>Hussein Farhat</h3>
+        <p>CrossFit Specialist</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <h2>🌟<span class="title-text">What Our Members Say</span></h2>
+    <div class="testimonials">
+      <div class="testimonial">
+        <img src="laid.jfif" alt="">
+        “GreekGod Gym completely changed my fitness game! The vibe is unreal.”
+        <strong>- David Laid</strong>
+      </div>
+      <div class="testimonial">
+        <img src="sara.jfif" alt="">
+        “Best trainers and equipment. I lost 10kg in 3 months!”
+        <strong>- Sara saffari</strong>
+      </div>
+      <div class="testimonial">
+        <img src="jeff.jfif" alt="">
+        “Love the neon energy. Feels like a nightclub for fitness!”
+        <strong>- Tristyn Lee</strong>
+      </div>
+    </div>
+  </section>
+
+  <section id="plans">
+    <h2>💎<span class="title-text">Membership Plans</span></h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>Basic</h3>
+        <p>Access to gym floor & cardio zone</p>
+        <p><strong>$20/month</strong></p>
+        <button>Join Now</button>
+      </div>
+      <div class="plan">
+        <h3>Pro</h3>
+        <p>All facilities + Group classes</p>
+        <p><strong>$40/month</strong></p>
+        <button>Join Now</button>
+      </div>
+      <div class="plan">
+        <h3>Elite</h3>
+        <p>Includes PT sessions & diet plans</p>
+        <p><strong>$70/month</strong></p>
+        <button>Join Now</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>📩 <span class="title-text">Get In Touch</span></h2>
+    <p>Ready to transform your body and mind? Join GreekGod Gym today!</p>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="4" placeholder="Your Message"></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+   <button id="backToTop">↑</button>
+
+  <script>
+    // Scroll reveal effect
+    const sections = document.querySelectorAll("section");
+    const revealOnScroll = () => {
+      const triggerBottom = window.innerHeight * 0.85;
+      sections.forEach(sec => {
+        const boxTop = sec.getBoundingClientRect().top;
+        if(boxTop < triggerBottom) {
+          sec.classList.add("visible");
+        }
+        else {
+      sec.classList.remove("visible");
+    }
+      });
+    };
+    window.addEventListener("scroll", revealOnScroll);
+
+    // Active link highlight
+    const navLinks = document.querySelectorAll("header nav a");
+    const activateLink = () => {
+      let current = "";
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 150;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute("id");
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === "#" + current) {
+          link.classList.add("active");
+        }
+      });
+    };
+     const backToTop = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 500) {
+        backToTop.style.display = "flex";
+      } else {
+        backToTop.style.display = "none";
+      }
+    });
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+    window.addEventListener("scroll", activateLink);
+    const joinButtons = document.querySelectorAll(".plan button");
+const contactSection = document.getElementById("contact");
+
+joinButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    contactSection.scrollIntoView({ behavior: "smooth" });
+  });
+});
+const exploreBtn = document.getElementById("exploreBtn");
+const facilitiesSection = document.getElementById("facilities");
+
+exploreBtn.addEventListener("click", () => {
+  const headerHeight = document.querySelector("header").offsetHeight;
+  const offsetTop = facilitiesSection.offsetTop - headerHeight;
+  window.scrollTo({ top: offsetTop, behavior: "smooth" });
+});
+  </script>
+</body>
+</html>
